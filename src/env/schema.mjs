@@ -7,7 +7,8 @@ import { z } from 'zod'
  */
 export const serverSchema = z.object({
   DATABASE_URL: z.string().url(),
-  NODE_ENV: z.enum(['development', 'test', 'production'])
+  NODE_ENV: z.enum(['development', 'test', 'production']),
+  PORT: z.string()
 })
 /**
  * Specify your client-side environment variables schema here.
