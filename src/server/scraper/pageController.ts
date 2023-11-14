@@ -5,7 +5,6 @@ export const scrape = async (url: string, target: string) => {
   try {
     let browser = await browserObject.startBrowser()
     let page = await browser.newPage()
-    console.log(`Navigating to ${url}...`)
     await page.goto(url, { waitUntil: 'domcontentloaded' })
     // Wait for the required DOM to be rendered
     // Get the link to all the required books
@@ -18,10 +17,7 @@ export const scrape = async (url: string, target: string) => {
       return quote
     })
 
-    console.log('🚀 ~ file: pageController.js:25 ~ urls ~ urls:', quotes)
     await browser.close()
     return quotes
-  } catch (err) {
-    console.log('Could not resolve the browser instance => ', err)
-  }
+  } catch (err) {}
 }

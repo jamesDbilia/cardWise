@@ -1,26 +1,32 @@
 import cheerio from 'cheerio'
 import { convertKStringToNumber } from './convertToNumber'
+import { PriceInfo } from '@/types'
 
 export const submitPsaData = (response: string) => {
   const $ = cheerio.load(response)
+  const normalPrices: PriceInfo[] = []
+  const offCenterPrices: PriceInfo[] = []
+  const tableRows = $('#itemResults tbody tr')
 
-  // Initialize an array to store the prices from 2023
-  const prices2023: any = []
+  const endDate = tableRows.first().find('td').eq(2).text().trim()
 
-  // Iterate over each row in the table body
+  const startDate = tableRows.last().find('td').eq(2).text().trim()
+
   $('#itemResults tbody tr').each((index, element) => {
-    // Extract the date and price from the current row
     const date = $(element).find('td').eq(2).text().trim()
     const priceText = $(element).find('td').eq(3).text().trim()
-
-    // Check if the date contains the year 2023
-    if (date.includes('2023')) {
-      // Remove the dollar sign and convert the price to a number
+    const grade = $(element).find('td').eq(4).text().trim()
+    if (date.includes('2022') || date.includes('2023')) {
       const price = parseFloat(priceText.replace(/[$,]/g, ''))
-      // Add the price to the array
-      prices2023.push(price)
+      if (grade.includes('(OC)')) {
+        offCenterPrices.push({
+          price,
+          date,
+          grade: Number(grade.split('(')[0])
+        })
+      } else normalPrices.push({ price, date, grade: Number(grade) })
     }
   })
 
-  console.log(prices2023)
+  return { normalPrices, offCenterPrices, startDate, endDate }
 }

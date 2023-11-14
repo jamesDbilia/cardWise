@@ -4,7 +4,8 @@ export const crawlSite = async (url: string) => {
   const body = {
     source: 'universal',
     url,
-    geo_location: 'United States'
+    geo_location: 'United States',
+    render: 'html'
   }
 
   const response: any = await fetch('https://realtime.oxylabs.io/v1/queries', {

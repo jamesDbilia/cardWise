@@ -8,41 +8,45 @@ datasource db {
     relationMode = "prisma"
 }
 
-model Ebay{
+model IndividualGrade {
     id                String  @id @default(cuid())
+    grade             Decimal @db.Decimal(10, 1)
+    cardId            String
+    price             Decimal
+    type              String
+    gradingCompany    String
 }
-model Psa{
+
+model AverageGrade{
     id                String  @id @default(cuid())
+    grade             Decimal @db.Decimal(10,1)
+    cardId            String
+    averagePrice      Decimal @db.Decimal(20,2)
+    averageOffCenterPrice Decimal @db.Decimal(20,2)
+    startDate         String
+    endDate           String
+    gradingCompany    String
 }
-model Bsg{
+model Card {
     id                String  @id @default(cuid())
+    name              String
+    brand             String
+    year              Int
+    psaUrl            String
+    ebayUrl           String 
+    includesKeywords   String
+    notIncludesKeywords String
 }
-
-
-// EBAY LISTINGS
-// NAME
-// PRICE
-// IMAGES
-// GRADE
-// GRADING COMPANY
-// SUGGESTED CONDITION
-
-// HISTORICAL DATA
-// 1 YEAR PRICE AVEARGE
-// GRADE
-// NAME
-// BRAND
-// YEAR
-// COMPANY
-// MAX PRICE LAST YEAR
-// MIN PRICE LAST YEAR
-// SPECIFICATION (OC ETC)
-
-
-// ALGORITHM FOR ALERTS
-// 30 MINUTES LEFT IN AUCTION
-// CARD IS 30% CHEAPER THAN AVERAGE
-
-// MACHINE LEARNING CARD GRADING
-
-
+model EbayListing {
+    id                String  @id @default(cuid())
+    name              String
+    description       String
+    currentPrice      Decimal @db.Decimal(20,2)
+    maxBidPrice       Decimal @db.Decimal(20,2)
+    endDate           String
+    images            String
+    grade             Decimal @db.Decimal(10,1)
+    gradingCompany    String
+    suggestedCondition String
+    cardId            String
+}

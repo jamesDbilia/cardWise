@@ -7,6 +7,7 @@ import type { AppProps } from 'next/app'
 import React from 'react'
 import { type NextComponentType } from 'next'
 import { type PageLayoutType } from '@/types/global'
+import 'tailwindcss/tailwind.css'
 
 function App({
   Component,
@@ -28,7 +29,6 @@ const getBaseUrl = () => {
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}` // SSR should use vercel url
   return `http://localhost:${process.env.PORT ?? 3000}` // dev SSR should use localhost
 }
-console.log('🚀 ~ file: _app.tsx:31 ~ getBaseUrl ~ getBaseUrl:', getBaseUrl())
 
 export default withTRPC<AppRouter>({
   config({}) {
