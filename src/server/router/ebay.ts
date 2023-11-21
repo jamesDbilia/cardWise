@@ -3,6 +3,7 @@ import { z } from 'zod'
 import puppeteer from 'puppeteer'
 import fetch from 'node-fetch'
 import cheerio from 'cheerio'
+import { notIncludesKeywords } from '../constants/notIncludesWords'
 export const EbayRouter = createRouter().query('get-listings', {
   input: z.object({
     url: z.string()
@@ -37,6 +38,10 @@ export const EbayRouter = createRouter().query('get-listings', {
     $('.s-item').each((index, element) => {
       // For each item, find the price, bids, and time left using the specified classes.
       const title = $(element).find('.s-item__title').text().trim()
+      const replica = title
+        .split(' ')
+        .find((word) => notIncludesKeywords.includes(word))
+
       const wordToFind = 'charizard'
       let regex = new RegExp(`\\b${wordToFind}\\b`, 'i') // 'i' for case-insensitive
 
@@ -48,6 +53,7 @@ export const EbayRouter = createRouter().query('get-listings', {
           .trim()
         const timeLeft = $(element).find('.s-item__time-left').text().trim()
         // Add the extracted data to your array.
+        if (replica) return
         itemsData.push({ price, bids, timeLeft })
       }
     })

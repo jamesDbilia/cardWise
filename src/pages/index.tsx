@@ -1,8 +1,12 @@
 import AddCard from '@/components/AddCard'
 import { trpc } from '@/utils/trpc'
 import type { NextPage } from 'next'
+const cron = require('node-cron')
 
 const Home: NextPage = () => {
+  cron.schedule('0 */6 * * *', () => {
+    const { data } = trpc.useQuery(['ebay.get-listings'])
+  })
   // const { data } = trpc.useQuery([
   //   'ebay.get-listings',
   //   {

@@ -42,13 +42,13 @@ export const CardRouter = createRouter().mutation('add-card', {
 
     const valuesArray: number[] = []
     for (let i = 10; i > 0; i -= 0.5) {
-      if (i !== 10 && !valuesArray.includes(i)) {
+      if (i !== 10 && valuesArray.length > 0 && !valuesArray.includes(i)) {
         console.log('BREAK')
         continue
       }
       const siteData = await crawlSite(`${psaUrl}#g=${i}`)
 
-      if (i === 10) {
+      if (valuesArray.length === 0) {
         const $ = cheerio.load(siteData)
         $('a[data-gradevalue]').each((index, element) => {
           const value = $(element).attr('data-gradevalue')
